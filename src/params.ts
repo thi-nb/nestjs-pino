@@ -3,12 +3,19 @@ import {
   MiddlewareConfigProxy,
   ModuleMetadata,
 } from '@nestjs/common/interfaces';
-import { Logger, DestinationStream } from 'pino';
+import { Logger, DestinationStream, LoggerOptions } from 'pino';
 import { Options } from 'pino-http';
 
 export type PassedLogger = { logger: Logger };
 
 export interface Params {
+  /**
+   *  Pino logger options
+   *  @see https://github.com/pinojs/pino/blob/main/docs/api.md#options
+   *
+   */
+  options: LoggerOptions;
+
   /**
    * Optional parameters for `pino-http` module
    * @see https://github.com/pinojs/pino-http#pinohttpopts-stream

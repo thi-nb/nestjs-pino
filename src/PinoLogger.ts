@@ -50,7 +50,7 @@ export class PinoLogger implements PinoMethods {
   protected readonly errorKey: string = 'err';
 
   constructor(
-    @Inject(PARAMS_PROVIDER_TOKEN) { pinoHttp, renameContext }: Params,
+    @Inject(PARAMS_PROVIDER_TOKEN) { pinoHttp, renameContext, options }: Params,
   ) {
     if (
       typeof pinoHttp === 'object' &&
@@ -62,7 +62,7 @@ export class PinoLogger implements PinoMethods {
 
     if (!outOfContext) {
       if (Array.isArray(pinoHttp)) {
-        outOfContext = pino(...pinoHttp);
+        outOfContext = pino({ ...pinoHttp, ...options });
       } else if (isPassedLogger(pinoHttp)) {
         outOfContext = pinoHttp.logger;
       } else if (
@@ -134,6 +134,10 @@ export class PinoLogger implements PinoMethods {
     }
     store.logger = store.logger.child(fields);
     store.responseLogger?.setBindings(fields);
+  }
+
+  child(bindings: pino.Bindings): pino.Logger {
+    return this.logger.child(bindings);
   }
 
   protected call(method: pino.Level, ...args: Parameters<LoggerFn>) {
