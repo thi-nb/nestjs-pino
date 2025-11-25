@@ -92,6 +92,34 @@ export class MyService {
 }
 ```
 
+You can create child logger with context like this:
+```ts
+mport { PinoLogger, InjectPinoLogger } from 'nestjs-pino';
+
+export class MyService {
+  constructor(
+    private readonly logger: PinoLogger
+  ) {
+    // Optionally you can set context for logger in constructor or ...
+    this.logger.setContext(MyService.name);
+  }
+
+  constructor(
+    // ... set context via special decorator
+    @InjectPinoLogger(MyService.name)
+    private readonly logger: PinoLogger
+  ) {}
+
+  updateUser(userId: string) {
+    // Create child logger with additional context
+    const childLogger = this.logger.child({ userId });
+    childLogger.info('Updating user data');
+  }
+}
+```
+
+```ts
+
 Usage of the standard logger is recommended and idiomatic for NestJS. But there is one more option to use:
 
 ```ts

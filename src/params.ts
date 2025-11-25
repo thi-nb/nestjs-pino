@@ -14,7 +14,7 @@ export interface Params {
    *  @see https://github.com/pinojs/pino/blob/main/docs/api.md#options
    *
    */
-  options: LoggerOptions;
+  options?: LoggerOptions;
 
   /**
    * Optional parameters for `pino-http` module
